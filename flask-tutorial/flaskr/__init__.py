@@ -1,6 +1,6 @@
 import os
 from markupsafe import escape
-from flask import Flask, url_for, request
+from flask import Flask, url_for, request, redirect
 from flask import render_template
 
 def create_app(test_config=None):
@@ -33,6 +33,18 @@ def create_app(test_config=None):
     def index():
         return 'index'
 
+    # Define the log_the_user_in function
+    def log_the_user_in(username):
+    # Perform actions to log in the user
+    # For demonstration purposes, I'll simply redirect to a dashboard page
+        return redirect(url_for('dashboard', username=username))
+
+    # Define the valid_login function
+    def valid_login(username, password):
+        # Implement your login validation logic here
+        # For demonstration purposes, I'll assume a simple check
+        return username == "admin" and password == "password"
+
     @app.route('/login', methods=['POST', 'GET'])
     def login():
         error = None
@@ -56,6 +68,12 @@ def create_app(test_config=None):
         print(url_for('login', next='/'))
         print(url_for('profile', username='John Doe'))
 
+
+    # Define the dashboard route
+    @app.route('/dashboard/<username>')
+    def dashboard(username):
+        return render_template('dashboard.html', username=username)
+    
     return app
 
     
